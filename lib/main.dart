@@ -39,12 +39,12 @@ class PickerExamplesPage extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _IntroCard(),
-              SizedBox(height: 16),
-              LinkageDemoSection(
+              const _IntroCard(),
+              const SizedBox(height: 16),
+              const LinkageDemoSection(
                 sectionTitle: '例子一：商品分类三级联动',
                 description:
                     '对应文章里的核心示例。使用 PickerItem 构建“商品大类 / 中类 / 小类”树形数据，'
@@ -63,8 +63,8 @@ class PickerExamplesPage extends StatelessWidget {
                   '通过 changeToFirst 实现联动后自动回到首项',
                 ],
               ),
-              SizedBox(height: 16),
-              LinkageDemoSection(
+              const SizedBox(height: 16),
+              const LinkageDemoSection(
                 sectionTitle: '例子二：省 / 市 / 区地址联动',
                 description:
                     '这是更贴近移动端表单的场景。这里仍然使用同一套适配器模式，只是把业务数据换成地址树，'
@@ -83,8 +83,30 @@ class PickerExamplesPage extends StatelessWidget {
                   '特别适合地址、组织架构、渠道分类这类表单场景',
                 ],
               ),
-              SizedBox(height: 16),
-              _ArticleSummaryCard(),
+              const SizedBox(height: 16),
+              LinkageDemoSection(
+                sectionTitle: '例子三：生日年 / 月 / 日联动',
+                description:
+                    '这一组数据不是手写常量，而是通过代码动态生成。年份列加宽，月份和日期列启用循环滚动，'
+                    '适合展示适配器模式对“运行时生成层级数据”的承载能力。',
+                pickerTitle: '请选择生日',
+                buttonText: '打开生日选择器',
+                buttonIcon: Icons.cake_outlined,
+                accentColor: const Color(0xFFBE123C),
+                chipColor: const Color(0xFFF9D7E2),
+                data: _birthdayTree,
+                defaultSelecteds: _birthdayDefaultSelecteds,
+                columnFlex: const [2, 1, 1],
+                looping: true,
+                highlights: const [
+                  '联动数据可以来自运行时代码生成，而不一定是固定常量',
+                  '2 月天数会跟随年份自动变化，能覆盖闰年场景',
+                  '通过 columnFlex 让年份列比月份、日期列更宽',
+                  '通过 looping 让月、日滚动体验更接近移动端原生选择器',
+                ],
+              ),
+              const SizedBox(height: 16),
+              const _ArticleSummaryCard(),
             ],
           ),
         ),
@@ -106,6 +128,8 @@ class LinkageDemoSection extends StatefulWidget {
     required this.data,
     required this.defaultSelecteds,
     required this.highlights,
+    this.columnFlex,
+    this.looping = false,
   });
 
   final String sectionTitle;
@@ -118,6 +142,8 @@ class LinkageDemoSection extends StatefulWidget {
   final List<LinkageNode> data;
   final List<int> defaultSelecteds;
   final List<String> highlights;
+  final List<int>? columnFlex;
+  final bool looping;
 
   @override
   State<LinkageDemoSection> createState() => _LinkageDemoSectionState();
@@ -143,6 +169,8 @@ class _LinkageDemoSectionState extends State<LinkageDemoSection> {
       selecteds: List<int>.from(_selectedIndexes),
       itemExtent: 46,
       changeToFirst: true,
+      looping: widget.looping,
+      columnFlex: widget.columnFlex,
       cancelText: '取消',
       confirmText: '确定',
       textStyle: const TextStyle(color: Color(0xFF5E746F), fontSize: 16),
@@ -314,7 +342,7 @@ class _IntroCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             '这个项目现在包含两个可直接运行的 flutter_picker_plus 示例。'
-            '你可以把它们看成文章里“商品分类”和“地址选择”两类典型场景的落地实现。',
+            '你可以把它们看成文章里“商品分类”“地址选择”“生日选择”三类典型场景的落地实现。',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: const Color(0xFF4B635E),
               height: 1.5,
@@ -345,6 +373,7 @@ class _ArticleSummaryCard extends StatelessWidget {
           const _FeatureLine(text: '界面层只关心 Picker，本身不需要知道业务数据来自商品、地址还是组织树'),
           const _FeatureLine(text: '数据层只要能转成 PickerItem 树，就能接入任意层级联动'),
           const _FeatureLine(text: '同一套页面结构可以快速复制出第三个、第四个联动场景'),
+          const _FeatureLine(text: '静态常量树和动态生成树都能接到同一个 PickerDataAdapter'),
           const _FeatureLine(text: '如果后续需要四级、五级联动，只要继续补 children 即可'),
         ],
       ),
@@ -581,6 +610,20 @@ const List<LinkageNode> _addressTree = [
   ),
 ];
 
+const int _birthdayStartYear = 1980;
+const int _birthdayEndYear = 2030;
+
+final List<LinkageNode> _birthdayTree = _buildBirthdayTree(
+  startYear: _birthdayStartYear,
+  endYear: _birthdayEndYear,
+);
+
+final List<int> _birthdayDefaultSelecteds = _findBirthdaySelecteds(
+  year: 2000,
+  month: 2,
+  day: 29,
+);
+
 List<PickerItem<LinkageNode>> _buildPickerItems(List<LinkageNode> nodes) {
   return nodes
       .map(
@@ -614,4 +657,49 @@ List<LinkageNode> _resolveSelection(List<int> indexes, List<LinkageNode> tree) {
   }
 
   return selection;
+}
+
+List<LinkageNode> _buildBirthdayTree({
+  required int startYear,
+  required int endYear,
+}) {
+  return List<LinkageNode>.generate(endYear - startYear + 1, (yearIndex) {
+    final year = startYear + yearIndex;
+    return LinkageNode(
+      code: '$year',
+      label: '$year年',
+      children: List<LinkageNode>.generate(12, (monthIndex) {
+        final month = monthIndex + 1;
+        final dayCount = _daysInMonth(year, month);
+        return LinkageNode(
+          code: _pad2(month),
+          label: '${_pad2(month)}月',
+          children: List<LinkageNode>.generate(dayCount, (dayIndex) {
+            final day = dayIndex + 1;
+            return LinkageNode(code: _pad2(day), label: '${_pad2(day)}日');
+          }),
+        );
+      }),
+    );
+  });
+}
+
+List<int> _findBirthdaySelecteds({
+  required int year,
+  required int month,
+  required int day,
+}) {
+  final safeYear = year.clamp(_birthdayStartYear, _birthdayEndYear);
+  final safeMonth = month.clamp(1, 12);
+  final safeDay = day.clamp(1, _daysInMonth(safeYear, safeMonth));
+
+  return [safeYear - _birthdayStartYear, safeMonth - 1, safeDay - 1];
+}
+
+int _daysInMonth(int year, int month) {
+  return DateTime(year, month + 1, 0).day;
+}
+
+String _pad2(int value) {
+  return value.toString().padLeft(2, '0');
 }

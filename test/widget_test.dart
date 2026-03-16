@@ -11,12 +11,17 @@ void main() {
     expect(find.text('flutter_picker_plus 使用例子'), findsOneWidget);
     expect(find.text('打开商品分类选择器'), findsOneWidget);
     expect(find.text('打开地址选择器'), findsOneWidget);
+    expect(find.text('打开生日选择器'), findsOneWidget);
     expect(find.text('例子二：省 / 市 / 区地址联动'), findsOneWidget);
+    expect(find.text('例子三：生日年 / 月 / 日联动'), findsOneWidget);
     expect(find.text('电子产品'), findsOneWidget);
     expect(find.text('手机通讯'), findsOneWidget);
     expect(find.text('智能手机'), findsOneWidget);
     expect(find.text('广东省'), findsOneWidget);
     expect(find.text('深圳市'), findsOneWidget);
     expect(find.text('南山区'), findsOneWidget);
+    expect(find.text('2000年'), findsOneWidget);
+    expect(find.text('02月'), findsOneWidget);
+    expect(find.text('29日'), findsOneWidget);
   });
 }
