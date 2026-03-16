@@ -184,10 +184,13 @@ class _LinkageDemoSectionState extends State<LinkageDemoSection> {
   }
 
   void _showPicker() {
+    final pickerHeight = _pickerHeight(context);
+
     Picker(
       adapter: PickerDataAdapter<LinkageNode>(data: _pickerItems),
       title: Text(widget.pickerTitle),
       selecteds: List<int>.from(_selectedIndexes),
+      height: pickerHeight,
       itemExtent: 46,
       changeToFirst: true,
       looping: widget.looping,
@@ -331,6 +334,11 @@ class _LinkageDemoSectionState extends State<LinkageDemoSection> {
         ],
       ),
     );
+  }
+
+  double _pickerHeight(BuildContext context) {
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    return (screenHeight * 0.32).clamp(220.0, 280.0);
   }
 }
 
