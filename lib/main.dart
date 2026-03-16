@@ -106,6 +106,27 @@ class PickerExamplesPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
+              const LinkageDemoSection(
+                sectionTitle: '例子四：组织架构四级联动',
+                description:
+                    '这个例子把层级扩展到四级，用来验证 PickerItem 的 children 可以继续向下嵌套。'
+                    '非常适合展示总部 / 中心 / 部门 / 小组这一类组织架构或渠道体系。',
+                pickerTitle: '请选择组织架构',
+                buttonText: '打开组织架构选择器',
+                buttonIcon: Icons.account_tree_outlined,
+                accentColor: Color(0xFF1D4ED8),
+                chipColor: Color(0xFFDCE9FF),
+                data: _organizationTree,
+                defaultSelecteds: [0, 0, 0, 1],
+                columnFlex: [2, 2, 2, 1],
+                highlights: [
+                  '同一个适配器模式可以自然扩展到四级联动',
+                  '默认索引可以精确回显到第四层的小组节点',
+                  '非常适合组织架构、经销渠道、品类树这类深层级场景',
+                  '如果要继续扩成五级，只需要继续追加 children',
+                ],
+              ),
+              const SizedBox(height: 16),
               const _ArticleSummaryCard(),
             ],
           ),
@@ -341,8 +362,8 @@ class _IntroCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            '这个项目现在包含两个可直接运行的 flutter_picker_plus 示例。'
-            '你可以把它们看成文章里“商品分类”“地址选择”“生日选择”三类典型场景的落地实现。',
+            '这个项目现在包含四个可直接运行的 flutter_picker_plus 示例。'
+            '你可以把它们看成文章里“商品分类”“地址选择”“生日选择”“组织架构”四类典型场景的落地实现。',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: const Color(0xFF4B635E),
               height: 1.5,
@@ -604,6 +625,110 @@ const List<LinkageNode> _addressTree = [
         children: [
           LinkageNode(code: '510703', label: '涪城区'),
           LinkageNode(code: '510704', label: '游仙区'),
+        ],
+      ),
+    ],
+  ),
+];
+
+const List<LinkageNode> _organizationTree = [
+  LinkageNode(
+    code: 'hq',
+    label: '总部',
+    children: [
+      LinkageNode(
+        code: 'rd_center',
+        label: '研发中心',
+        children: [
+          LinkageNode(
+            code: 'client_platform',
+            label: '客户端平台部',
+            children: [
+              LinkageNode(code: 'ios_team', label: 'iOS 组'),
+              LinkageNode(code: 'flutter_team', label: 'Flutter 组'),
+              LinkageNode(code: 'android_team', label: 'Android 组'),
+            ],
+          ),
+          LinkageNode(
+            code: 'backend_platform',
+            label: '服务端平台部',
+            children: [
+              LinkageNode(code: 'gateway_team', label: '网关组'),
+              LinkageNode(code: 'data_team', label: '数据服务组'),
+            ],
+          ),
+        ],
+      ),
+      LinkageNode(
+        code: 'product_center',
+        label: '产品中心',
+        children: [
+          LinkageNode(
+            code: 'consumer_product',
+            label: 'C 端产品部',
+            children: [
+              LinkageNode(code: 'growth_team', label: '增长组'),
+              LinkageNode(code: 'member_team', label: '会员组'),
+            ],
+          ),
+          LinkageNode(
+            code: 'merchant_product',
+            label: 'B 端产品部',
+            children: [
+              LinkageNode(code: 'supply_team', label: '供应链组'),
+              LinkageNode(code: 'crm_team', label: 'CRM 组'),
+            ],
+          ),
+        ],
+      ),
+    ],
+  ),
+  LinkageNode(
+    code: 'regional_business',
+    label: '区域事业群',
+    children: [
+      LinkageNode(
+        code: 'east_region',
+        label: '华东大区',
+        children: [
+          LinkageNode(
+            code: 'hangzhou_branch',
+            label: '杭州分部',
+            children: [
+              LinkageNode(code: 'channel_team', label: '渠道组'),
+              LinkageNode(code: 'ops_team', label: '运营组'),
+            ],
+          ),
+          LinkageNode(
+            code: 'shanghai_branch',
+            label: '上海分部',
+            children: [
+              LinkageNode(code: 'ka_team', label: 'KA 组'),
+              LinkageNode(code: 'retail_team', label: '零售组'),
+            ],
+          ),
+        ],
+      ),
+      LinkageNode(
+        code: 'south_region',
+        label: '华南大区',
+        children: [
+          LinkageNode(
+            code: 'guangzhou_branch',
+            label: '广州分部',
+            children: [
+              LinkageNode(code: 'brand_team', label: '品牌组'),
+              LinkageNode(code: 'service_team', label: '服务组'),
+            ],
+          ),
+          LinkageNode(
+            code: 'shenzhen_branch',
+            label: '深圳分部',
+            children: [
+              LinkageNode(code: 'ecosystem_team', label: '生态组'),
+              LinkageNode(code: 'expansion_team', label: '拓展组'),
+            ],
+          ),
         ],
       ),
     ],

@@ -12,8 +12,10 @@ void main() {
     expect(find.text('打开商品分类选择器'), findsOneWidget);
     expect(find.text('打开地址选择器'), findsOneWidget);
     expect(find.text('打开生日选择器'), findsOneWidget);
+    expect(find.text('打开组织架构选择器'), findsOneWidget);
     expect(find.text('例子二：省 / 市 / 区地址联动'), findsOneWidget);
     expect(find.text('例子三：生日年 / 月 / 日联动'), findsOneWidget);
+    expect(find.text('例子四：组织架构四级联动'), findsOneWidget);
     expect(find.text('电子产品'), findsOneWidget);
     expect(find.text('手机通讯'), findsOneWidget);
     expect(find.text('智能手机'), findsOneWidget);
@@ -23,5 +25,9 @@ void main() {
     expect(find.text('2000年'), findsOneWidget);
     expect(find.text('02月'), findsOneWidget);
     expect(find.text('29日'), findsOneWidget);
+    expect(find.text('总部'), findsOneWidget);
+    expect(find.text('研发中心'), findsOneWidget);
+    expect(find.text('客户端平台部'), findsOneWidget);
+    expect(find.text('Flutter 组'), findsOneWidget);
   });
 }
