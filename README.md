@@ -1,6 +1,6 @@
 # multi_level_linkage_demo
 
-Flutter 多级联动选择器示例
+## Flutter 多级联动选择器示例
 
 ## 当前内置示例
 
@@ -46,8 +46,9 @@ Flutter 多级联动选择器示例
 - 组织树 / 渠道树 / 品类树的典型写法
 - 四级结构仍可复用同一个示例面板组件
 
+## [多级联动选择器文章地址]()
+
 ## 截图说明
 
-仓库当前已有一张总览动图：
-
 ![展示图](assets/images/multi_level_linkage_demo.gif)
+
